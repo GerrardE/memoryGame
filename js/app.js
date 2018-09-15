@@ -1,44 +1,74 @@
 	//First, I got the deck,
 	const deck = document.getElementById("deck");
+
 	//Then I stored all the required images in my cards,
 	const cards = ["fa-diamond","fa-paper-plane-o","fa-anchor","fa-bolt","fa-cube","fa-anchor","fa-leaf","fa-bicycle","fa-diamond","fa-bomb","fa-leaf","fa-bomb","fa-bolt","fa-bicycle","fa-paper-plane-o", "fa-cube"];
+
 	//Here, i collect the move ID and track it on call function recordMoves,
 	let record = document.getElementById('moves');
 	let moves = 0;
-	var recordMoves =	function (){
+	var recordMoves = function (){
 			moves++;    
 			record.innerHTML = moves;
 		}
 	
-	//Here, I set up the star element and add it when the recordMatch function is called
-	let stars = document.getElementById('stars');
+	//Here, I set up all the star elements and add it when the recordMatch function is called
+	var stars = document.getElementById('stars');
+	let rating = document.getElementById('rating');
+	let rating1 = document.getElementById('rating1');
 	let matches = document.getElementById('matched');
 	let match = 0;
+
 	var recordMatch =	function (){
 			match++; 
-				let image = document.createElement('i');
-				image.classList.add('fa', 'fa-star');
-				let starr = document.createElement('li');
-				starr.appendChild(image);	
-			if ((moves < 9) && (match <= 2)){
-				stars.appendChild(starr);
-				console.log(starr);
-			} else if (moves < 17 && (match > 2 || match <= 4)){
-				stars.appendChild(starr);
-			} else if (moves > 24 && (match > 4 || match <= 6)){
-				stars.appendChild(starr);
-			}
+				//control how the stars are awarded out of five, one being the highest
+				//each for the live view, congratulations/gameOver modal
+				if(match === 2){
+					stars.removeChild(stars.childNodes[0]);
+					rating.removeChild(rating.childNodes[0]);
+					rating1.removeChild(rating1.childNodes[0]);
+				} else if (match === 4) {
+					stars.removeChild(stars.childNodes[1]);
+					rating.removeChild(rating.childNodes[1]);
+					rating1.removeChild(rating1.childNodes[1]);
+				} else if (match === 6) {
+					stars.removeChild(stars.childNodes[2]);
+					rating.removeChild(rating.childNodes[2]);
+					rating1.removeChild(rating1.childNodes[2]);
+				} else if (match === 8) {
+					stars.removeChild(stars.childNodes[3]);
+					rating.removeChild(rating.childNodes[3]);
+					rating1.removeChild(rating1.childNodes[3]);
+				}
 		
 				//This If statement kicks when the matches are complete. Congratulations!
 				if (match === 8) {
+				let final = document.getElementById('timer');
+				final.removeAttribute('id', 'timer');
+					
 				let modal = document.getElementById('modal');
 				modal.style.display = 'block';
+					
 				let close = document.getElementById('close');
-				close.onclick = function(){
+					close.onclick = function(){
 					modal.style.display = 'none';
+					newGame();
 				}
-			}
+			} 
 		}
+		
+				//End this game under certain conditions specified by the timer;
+				var gameOver = function (){
+						let gameO = document.getElementById('gameOver');
+						gameO.style.display = 'block';
+					
+						let gclose = document.getElementById('close-g');
+						gclose.onclick = function(){
+						gameO.style.display = 'none';
+						}
+						let removeTimer = document.getElementById('timer');
+						removeTimer.style.display = 'none';
+				}
 		
 		//This is the shuffle function recommemnded by Udacity, I call it to shuffle the images on the cards
 		function shuffle () {
@@ -141,10 +171,47 @@
 					};				
 		};// End of this for-loop loops through the boxes and adds classes/removes classes on them
 
-		//
-		
+			//Timer function by https://codepen.io/ishanbakshi/pen/pgzNMv;
+				document.getElementById('timer').innerHTML =
+					05 + ":" + 00;
+					startTimer();
+
+				function startTimer() {
+					var presentTime = document.getElementById('timer').innerHTML;
+					var timeArray = presentTime.split(/[:]+/);
+					var m = timeArray[0];
+					var s = checkSecond((timeArray[1] - 1));
+					if(s==59){
+						m=m-1
+					}
+						if((m == 0 && s == 0) && moves === 0) {
+							gameOver();
+						//document.getElementById('timer').innerHTML =
+						//00 + ":" + 00;
+						} else if((m == 0 && s == 0) && ((moves > 0) && (match < 1))) {
+						gameOver();
+						//document.getElementById('timer').innerHTML =
+						//00 + ":" + 00;
+						} else if((m == 0 && s == 0) && ((moves > 0) && (match < 8))) {
+						gameOver();
+						//document.getElementById('timer').innerHTML =
+						//00 + ":" + 00;
+						} else {
+							document.getElementById('timer').innerHTML =
+							m + ":" + s;
+							setTimeout(startTimer, 200);
+						}
+				}
+
+				function checkSecond(sec) {
+					if (sec < 10 && sec >= 0) {sec = "0" + sec}; // add zero in front of numbers < 10
+					if (sec < 0) {sec = "59"};
+					return sec;
+				}
+			//Timer function by https://codepen.io/ishanbakshi/pen/pgzNMv ends here;
 
 		//Onclick restart button, this function ensures the game is restarted
 		function newGame(){
 				window.location.reload();
+				startTimer();
 		}

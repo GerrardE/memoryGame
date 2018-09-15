@@ -194,7 +194,7 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
+    width: 300px;
     margin-bottom: 10px;
 }
 
@@ -215,39 +215,48 @@ h1 {
     cursor: pointer;
 }
 
+span#rating, span#rating1 {
+		list-style: none;
+    display:inline-flex;
+		margin: 0px 10px;
+}
+
+span.timer{
+	background-color: darkred;
+	color: #fff;
+}
 /*
  * Styles for the congratulations modal
  */
 
-.modal{
+.modal, .gameOver{
     background: #fff;
     border-radius: 10px;
-    justify-content: space-between;
-    align-items: center;
 		position: fixed;
 		z-index: 1;
-		left: 1;
-		top: 1;
-		min-width: 60%;
-		min-height: 60%;
+		left: 0;
+		top: 0;
+		min-width: 100%;
+		min-height: 100%;
 		overflow: auto;
 		background-color: rgb(0,0,0);
 		background-color: rgba(0,0,0,0.8);
 		display: none;
 		color: aliceblue;
+		padding: 100px;
 }
 
-.close{
+.close, .close-g{
 		color: #aaa;
 		float: right;
-		font-size: 40px;
+		font-size: 30px;
 		font-weight: bold;
 		background-color: darkred;
 		width: 4%;
-		height: 2%;
+		height: 4%;
 }
 
-.close:hover, .close:focus{
+.close:hover, .close:focus, .close-g:hover, .close-g:focus{
 		color: #fff;
 		text-decoration: none;
 		cursor: pointer;
